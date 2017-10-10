@@ -23,6 +23,7 @@
  * - a black field with a &#9762; sign: a mine
  * - an orange field with a &#9872; sign: a field tagged by you, but not containing any mines
  * - a green field with a &#9873; sign: a field tagged by you containing a mine
+ * - a green field with a &#9762; sign: an untapped mine
  */
 var mineSweeper = (function() {
 	/**
@@ -110,7 +111,8 @@ var mineSweeper = (function() {
 				mine: 'c-minesweeper__field c-minesweeper__field--mine',
 				flag: 'c-minesweeper__field c-minesweeper__field--flag',
 				flagBad: 'c-minesweeper__field c-minesweeper__field--flagBad',
-				flagGood: 'c-minesweeper__field c-minesweeper__field--flagGood'
+				flagGood: 'c-minesweeper__field c-minesweeper__field--flagGood',
+				mineGood: 'c-minesweeper__field c-minesweeper__field--mineGood'
 			},
 			index = getFieldIndex(coords),
 			field = document.getElementById('minesweeper-field'.concat(index));
@@ -413,6 +415,7 @@ var mineSweeper = (function() {
 	 * It reveals the following statuses: 
 	 * - mines: mines not found yet
 	 * - flagged mines: mines that have been flagged as suspect
+	 * - untapped mines: mines the user did not tap and have been revealed for the user
 	 * - mistaken mines: fields that have been tagged as suspect, but were not mines
 	 * - dangerous fields: fields adjacent to mines
 	 * - blank fields: fields that do not contain a mine and nor their neighbors have a mine
@@ -426,8 +429,10 @@ var mineSweeper = (function() {
 		if (!state.revealed) {
 			state.revealed = true;
 			if (state.mine) {
-				if (state.flagged || victory) {
+				if (state.flagged) {
 					setFieldState(coords, 'flagGood', '&#9873;');
+				} else if (victory) {
+					mineGood(coords, 'mineGood', '&#9762;');
 				} else {
 					setFieldState(coords, 'mine', '&#9762;');
 				}
