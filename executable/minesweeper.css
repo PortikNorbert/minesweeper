@@ -228,6 +228,7 @@ input[type=number]::-webkit-outer-spin-button {
 	animation-name: shrinker;
 }
 
+.c-minesweeper__field--mineGood,
 .c-minesweeper__field--flagGood {
 	cursor: default;
 	color: white;
