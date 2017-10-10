@@ -1,6 +1,8 @@
 /**
  * How to play the game:
- * First complete the form on how many columns, rows and mines do you want to have, then hit the 'Start new game button.'
+ * Launch the game from the executable folder by double clicking on the minesweeper.html.
+ * Once the game is loaded you can complete the form. You can set how many columns, rows and mines do you want to have.
+ * Start a new game by hitting the 'Start new game button.'
  * Play the game by clicking on the fields one by one. Your goals is to reveal each field excluding the ones that contain a mine.
  * To learn, where the mines are, check the field you have been clicked. If the field does not contain a number, there are no mines in the immediate vicinity.
  * If you see a number in a field, that means that in the immediate vicinity there are that number of mines.
