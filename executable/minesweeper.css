@@ -1,0 +1,311 @@
+html, body {
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	background-color: rgb(255, 244, 234);
+}
+
+body {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.c-minesweeper {
+	display: flex;
+	align-items: center;
+	font-family: Georgia;
+	height: 100%;
+	overflow: auto;
+	width: 100%;
+	justify-content: center;
+}
+
+.c-minesweeper__mineFieldCt {
+	min-width: 55%;
+	min-height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.c-minesweeper__mineField {
+	height: 100%;
+	padding: 5px;
+	margin: 10px 20px;
+	flex-wrap: wrap;
+	opacity: 0;
+	display: flex;
+	justify-content: center;
+	position: relative;
+	border-radius: 4px;
+	border: 2px solid rgb(105, 65, 28);
+	box-shadow: 2px 3px 10px 5px rgba(105, 65, 28, 0.25);
+	background-color: rgb(186, 128, 75);
+}
+
+.c-minesweeper__menu {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex: 0 1 380px;
+	margin: 0 5px;
+}
+
+.c-minesweeper__inputs {
+	margin: 10px auto;
+	align-items: center;
+}
+
+.c-minesweeper__inputs > div {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	margin: 15px auto;
+}
+
+.c-minesweeper__board {
+	border-radius: 5px;
+	padding: 15px;
+	min-height: 24px;
+	margin: 20px 20px 25px;
+	min-width: 200px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: white;
+	border: 1px solid rgba(0, 0, 0, 0.25);
+	box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.15);
+	display: none;
+}
+
+.c-minesweeper__timer {
+	width: 125px;
+	border-radius: 5px;
+	padding: 5px 10px;
+	min-height: 20px;
+	margin: 10px auto;
+	display: flex;
+	font-size: 36px;
+	align-items: center;
+	justify-content: center;
+	color: rgb(105, 65, 28);
+}
+
+.c-minesweeper__label {
+	color: rgb(105, 65, 28);
+	font-weight: bold;
+	text-align: right;
+	min-width: 100px;
+	flex-basis: calc(70% - 55px);
+}
+
+.c-minesweeper__param {
+	flex: 0 0 35px;
+	max-width: 35px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 3px;
+	margin: 5px 15px 5px 10px;
+	text-align: center;
+	color: rgb(105, 65, 28);
+	font-weight: bold;
+	border: 0 none;
+	box-shadow: 0px 0px 3px 1px rgba(105, 65, 28, 0.3);
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {  
+   opacity: 1;
+}
+
+.c-minesweeper__playBtn {
+	flex: 1 1 145px;
+	margin: 10px auto;
+	padding: 5px 20px;
+	max-height: 95px;
+	color: rgb(222,184,135);
+	font-size: 36px;
+	font-family: Harrington, Georgia;
+	border: 3px double rgb(0, 150, 0);
+	border-radius: 7px;
+	text-shadow: 0 0 5px rgba(0,100,0,0.5);
+	background-image: linear-gradient(170deg, rgba(0, 100, 0, 0.7) 25%, rgb(0, 75, 0));
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	outline: 0 none;
+	cursor: pointer;
+}
+
+@keyframes card {
+	0% {
+		transform: rotateY(0deg);
+	}
+	25% {
+		transform: rotateY(45deg);
+	}
+	50% {
+		transform: rotateY(90deg);
+	}
+	75% {
+		transform: rotateY(45deg);
+	}
+	100% {
+		transform: rotateY(0deg);
+	}
+}
+
+@keyframes shrinker {
+	0% {
+		transform: scale(1,1);
+	}
+	25% {
+		transform: scale(0.85,0.85);
+	}
+	50% {
+		transform: scale(0.75,0.75);
+	}
+	75% {
+		transform: scale(0.85,0.85);
+	}
+	100% {
+		transform: scale(1,1);
+	}
+}
+
+.c-minesweeper__field {
+	width: 53px;
+	height: 53px;
+	display: flex;
+	margin: 1px;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+	cursor: pointer;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 2px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	font-size: 26px;
+	font-size: 1.4vw;
+	animation-duration: 0.20s;
+	border-color: rgba(0, 0, 0, 0.5);
+	background-color: rgb(105, 65, 28);
+}
+
+.c-minesweeper__field--blank {
+	cursor: default;
+	color: rgb(105, 65, 28);
+	border-color: rgba(0, 0, 0, 0.15);
+	background-color: rgb(156, 114, 76);
+}
+
+.c-minesweeper__field--danger {
+	cursor: default;
+	color: rgb(105, 65, 28);
+	border-color: rgba(0, 0, 0, 0.15);
+	background-color: rgb(255, 214, 176);
+	animation-name: card;
+}
+
+.c-minesweeper__field--mine {
+	cursor: default;
+	color: rgb(105, 65, 28);
+	border-color: rgba(0, 0, 0, 0.15);
+	background-color: rgb(31, 23, 16);
+	animation-name: shrinker;
+}
+
+.c-minesweeper__field--flag {
+	color: white;
+	background-color: rgb(81, 13, 0);
+	animation-name: shrinker;
+}
+
+.c-minesweeper__field--flagGood {
+	cursor: default;
+	color: white;
+	padding: 0 0 4px 0;
+	border-color: rgba(0, 0, 0, 0.15);
+	background-color: rgba(0, 250, 0, 0.25);
+}
+
+.c-minesweeper__field--flagBad {
+	cursor: default;
+	color: white;
+	padding: 0 0 4px 0;
+	border-color: rgba(0, 0, 0, 0.15);
+	background-color: rgba(250, 120, 0, 0.75);
+}
+
+.o-modal {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	z-index: -1;
+	cursor: pointer;
+	transition: opacity 0.25s, z-index 0.25s;
+}
+
+.o-modal__overlay {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.o-modal__content {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	padding: 25px;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	border-radius: 5px;
+}
+
+.o-modal--open {
+	opacity: 1;
+	z-index: 100;
+}
+
+.o-modal--open .o-modal__victory-star {
+	display: none;
+}
+
+.o-modal--open.o-modal--victory .o-modal__victory-star {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	fill: rgb(255, 191, 0);
+	stroke: rgb(198, 148, 0);
+	stroke-width: 2px;
+	display: block;
+	border-radius: 5px;
+	border: 1px solid rgba(198, 148, 0, 0.75);
+	background-color: wheat;
+	margin-top: -175px;
+	transform: translate(-50%, -50%);
+}
+
+@media (max-width: 1000px) {
+	.c-minesweeper__playBtn {
+		font-size: 26px;
+		max-height: 75px;
+	}
+}
+
+@media (max-width: 700px) {
+	.c-minesweeper__playBtn {
+		font-size: 18px;
+		max-height: 60px;
+	}
+}

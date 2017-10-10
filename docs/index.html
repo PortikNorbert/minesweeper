@@ -1,0 +1,2536 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>  | Documentation</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='assets/bass.css' type='text/css' rel='stylesheet' />
+  <link href='assets/style.css' type='text/css' rel='stylesheet' />
+  <link href='assets/github.css' type='text/css' rel='stylesheet' />
+  <link href='assets/split.css' type='text/css' rel='stylesheet' />
+</head>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'></h3>
+          <div class='mb1'><code></code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#minesweeper'
+                  class="">
+                  mineSweeper
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#showmessage'
+                  class="">
+                  showMessage
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#showmessage'
+                  class="">
+                  showMessage
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#hidemessage'
+                  class="">
+                  hideMessage
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getfieldcoords'
+                  class="">
+                  getFieldCoords
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getfieldindex'
+                  class="">
+                  getFieldIndex
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getstate'
+                  class="">
+                  getState
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#setfieldstate'
+                  class="">
+                  setFieldState
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#formattime'
+                  class="">
+                  formatTime
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#gettime'
+                  class="">
+                  getTime
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#runtime'
+                  class="">
+                  runTime
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#inittimer'
+                  class="">
+                  initTimer
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getrandomnumberbetween'
+                  class="">
+                  getRandomNumberBetween
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getmineindexes'
+                  class="">
+                  getMineIndexes
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#createfield'
+                  class="">
+                  createField
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#generateminefield'
+                  class="">
+                  generateMineField
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getinputvalue'
+                  class="">
+                  getInputValue
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#setinputvalue'
+                  class="">
+                  setInputValue
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#setgamevariables'
+                  class="">
+                  setGameVariables
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#setsize'
+                  class="">
+                  setSize
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#resetgame'
+                  class="">
+                  resetGame
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#newgame'
+                  class="">
+                  newGame
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#isexistingneighbor'
+                  class="">
+                  isExistingNeighbor
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getneighborindexes'
+                  class="">
+                  getNeighborIndexes
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#getneighborsmines'
+                  class="">
+                  getNeighborsMines
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#resolvefield'
+                  class="">
+                  resolveField
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#revealall'
+                  class="">
+                  revealAll
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#gameover'
+                  class="">
+                  gameOver
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#checkvictorycondition'
+                  class="">
+                  checkVictoryCondition
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#revealneighbors'
+                  class="">
+                  revealNeighbors
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#revealfield'
+                  class="">
+                  revealField
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#toggleflag'
+                  class="">
+                  toggleFlag
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#handleleftclick'
+                  class="">
+                  handleLeftClick
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#handlerightclick'
+                  class="">
+                  handleRightClick
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='http://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='minesweeper'>
+      mineSweeper
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>How to play the game:
+First complete the form on how many columns, rows and mines do you want to have, then hit the 'Start new game button.'
+Play the game by clicking on the fields one by one. Your goals is to reveal each field excluding the ones that contain a mine.
+To learn, where the mines are, check the field you have been clicked. If the field does not contain a number, there are no mines in the immediate vicinity.
+If you see a number in a field, that means that in the immediate vicinity there are that number of mines.
+It is possible to tag a field with the right mouse button. Do this, if you suspect that there is a mine underneath. This way you can ensure that you don't click that field by accident.
+To un-tag a field, right click on it again. </p>
+<p>The game was tested on Windows only, on the following browsers:</p>
+<ul>
+<li>Google Chrome Version 61</li>
+<li>Mozilla Firefox Version 56</li>
+<li>Microsoft Edge Version 40</li>
+<li>Internet Explorer Version 11.68</li>
+</ul>
+<p>These are the signs used for the different fields:</p>
+<ul>
+<li>dark brown field: unrevealed field, it may contain a mine</li>
+<li>light brown field: blank field, there are no mines around it</li>
+<li>light field with a number: it indicates, how many mines are in the neighboring fields</li>
+<li>a maroon field with a ⚠ sign: indicates a tagged field</li>
+<li>a black field with a ☢ sign: a mine</li>
+<li>an orange field with a ⚐ sign: a field tagged by you, but not containing any mines</li>
+<li>a green field with a ⚑ sign: a field tagged by you containing a mine</li>
+</ul>
+
+
+  <div class='pre p1 fill-light mt0'>mineSweeper</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='showmessage'>
+      showMessage
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>The minesweeper variable contains all the functionalities of the game.
+There are several key variables accesible from outside of the methods:</p>
+<ul>
+<li>{function} timer - The time counting mechanics are kept in this variable, it is a setTimeout function</li>
+<li>{number} nrOfRows - How many rows the minefield will have.</li>
+<li>{number} nrOfMines - How many mines the minefield will have.</li>
+<li>{number} nrOfFields - How many clickable fields the minefield will have.</li>
+<li>{number} nrOfColumns - How many columns the minefield will have.</li>
+<li>{number} fieldMap - An array of arrays holding the status of each field.</li>
+<li>{number} game - Some flags regarding the game progress.</li>
+<li>{number} fieldSize - The width and height of a field used to give a dynamic size to the minesweeper.</li>
+</ul>
+
+
+  <div class='pre p1 fill-light mt0'>showMessage(msg: any, victory: any)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>msg</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>victory</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='showmessage'>
+      showMessage
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Shows a message in a modal window, game over and victory messages are shown by this method.</p>
+
+
+  <div class='pre p1 fill-light mt0'>showMessage(msg: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, victory: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>msg</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The message to be displayed.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>victory</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+	    A variables indicating if the message is a victory message.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='hidemessage'>
+      hideMessage
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Hides the messages modal and empties it's content.</p>
+
+
+  <div class='pre p1 fill-light mt0'>hideMessage()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getfieldcoords'>
+      getFieldCoords
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Transforms a simple number to a pair of coordinates, which defines a field</p>
+
+
+  <div class='pre p1 fill-light mt0'>getFieldCoords(idx: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>idx</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    The index of a field, this represents the field's order on the minefield.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
+        An array of 2 numbers defining the position of a field.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getfieldindex'>
+      getFieldIndex
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Transforms the array defining the field's position to a number (the order number of the field).</p>
+
+
+  <div class='pre p1 fill-light mt0'>getFieldIndex(coords: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>coords</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    An array defining the position of field, also the map to the field's flags.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
+        Returns the order number of a field.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getstate'>
+      getState
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Gets the state of a field, the state contains 3 flags.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getState(coords: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>coords</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    An array of 2 numbers representing the map to the field's state.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
+        Returns an object with 3 fields (if the field was revealed, if it is a mine and if it has a flag put on it).
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='setfieldstate'>
+      setFieldState
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Sets the field's appearance on the page by applying a certain class. Also inserts content.</p>
+
+
+  <div class='pre p1 fill-light mt0'>setFieldState(coords: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, content: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>coords</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    An array of 2 numbers representing the position of the field.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The type of the field, map to a css class name.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>content</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The character to be shown in field.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='formattime'>
+      formatTime
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Formats the output time for the timer. I the number is smaller than 10 it adds a leading 0.</p>
+
+
+  <div class='pre p1 fill-light mt0'>formatTime(t: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>t</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    The quantity of minutes or seconds
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        Returns the formatted number.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='gettime'>
+      getTime
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Getter for the elapsed time. Used when the game ends.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getTime(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>:
+        Returns the time spent on solving the minefield.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='runtime'>
+      runTime
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Runs the timer until the game is lost or won.</p>
+
+
+  <div class='pre p1 fill-light mt0'>runTime(timerField: any, minutes: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, seconds: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, timerfield: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>timerField</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>minutes</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    The minutes already spent on the current session of the game.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>seconds</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    The additional seconds already spent on the current session of the game.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>timerfield</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    The element from the DOM, where the timer is displayed.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='inittimer'>
+      initTimer
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Initializes the timer once the game is started.</p>
+
+
+  <div class='pre p1 fill-light mt0'>initTimer()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getrandomnumberbetween'>
+      getRandomNumberBetween
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Generates a random number in a given interval.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getRandomNumberBetween(min: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, max: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>min</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    The minimum value from the interval.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>max</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    The maximum value from the interval.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
+        Returns a random number.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getmineindexes'>
+      getMineIndexes
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Generates the ordered position of the mines.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getMineIndexes(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set">Set</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set">Set</a></code>:
+        Returns a set of numbers, each representing a single mine.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='createfield'>
+      createField
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Creates a new DOM element which serves as a field. Adds the events for the field.</p>
+
+
+  <div class='pre p1 fill-light mt0'>createField(i: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>i</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    The ordered index of the field to be created.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
+        Returns a new field.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='generateminefield'>
+      generateMineField
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>It generates the minefield by creating a map with each field's flags and appends each field to the DOM.</p>
+
+
+  <div class='pre p1 fill-light mt0'>generateMineField(mineField: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mineField</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    A DOM node where the fields will be inserted into.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getinputvalue'>
+      getInputValue
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Gets the value of an input field.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getInputValue(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, returnNumber: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): string/number</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The id attribute of the field.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>returnNumber</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+	    If the return value should be number or not.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>string/number</code>:
+        The value of an input field.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='setinputvalue'>
+      setInputValue
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Sets the value of an input field.</p>
+
+
+  <div class='pre p1 fill-light mt0'>setInputValue(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, value: string/number)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    The id of the input field.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>value</span> <code class='quiet'>(string/number)</code>
+	    The value to be set.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='setgamevariables'>
+      setGameVariables
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Reads and sets the input parameters for generating the minefield.
+In case there are any not recommended settings, more appropriate values will be set.</p>
+
+
+  <div class='pre p1 fill-light mt0'>setGameVariables()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='setsize'>
+      setSize
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Resets and resizes the minefield container.</p>
+
+
+  <div class='pre p1 fill-light mt0'>setSize(mineField: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mineField</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    A DOM node where the fields will be inserted into.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='resetgame'>
+      resetGame
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Resets the game state. Stops the timer.</p>
+
+
+  <div class='pre p1 fill-light mt0'>resetGame()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='newgame'>
+      newGame
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Initializes a new game by resetting variables and regenerating the minefield.</p>
+
+
+  <div class='pre p1 fill-light mt0'>newGame()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='isexistingneighbor'>
+      isExistingNeighbor
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Checks if on the given coordinats exists a field.</p>
+
+
+  <div class='pre p1 fill-light mt0'>isExistingNeighbor(coords: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>coords</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    A pair of numbers that should map to a field in the DOM and the field map.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        It is true if the fields exists. False if not.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getneighborindexes'>
+      getNeighborIndexes
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Determines the theoretical position of the sourrounding fields.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getNeighborIndexes(coords: any, null-null: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>coords</span> <code class='quiet'>(any)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>null-null</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    A pair of numbers showing the position of the selected field.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a></code>:
+        A list of arrays, each representing a coordinate to a neighbor.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='getneighborsmines'>
+      getNeighborsMines
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Check on how many mines are in the neighboring fields.</p>
+
+
+  <div class='pre p1 fill-light mt0'>getNeighborsMines(mainCoords: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mainCoords</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    Represents a coordinate for the selected field.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
+        Returns the number of mines in the neighboring fields.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='resolvefield'>
+      resolveField
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Reveals a field with all it's states. It changes only the looks and it does not propagate to other fields.</p>
+
+
+  <div class='pre p1 fill-light mt0'>resolveField(coords: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>, victory: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>coords</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    A pair of numbers representing the coordinates of the field to be revealed.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>victory</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+	    A flag showing if the game ended with victory or not.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='revealall'>
+      revealAll
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Reveals all fields to the player in case the game is over.</p>
+
+
+  <div class='pre p1 fill-light mt0'>revealAll(victory: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>victory</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+	    A flag showing if the game ended with victory or not.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='gameover'>
+      gameOver
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>It is the event when the game ends. Interaction is stopped, all fields are evaluated and a message is shown.</p>
+
+
+  <div class='pre p1 fill-light mt0'>gameOver()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='checkvictorycondition'>
+      checkVictoryCondition
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Checks if victory conditions are met. If they are, victory is announced.</p>
+
+
+  <div class='pre p1 fill-light mt0'>checkVictoryCondition()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='revealneighbors'>
+      revealNeighbors
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Reveal any fields that are in the immediate neighborhood.</p>
+
+
+  <div class='pre p1 fill-light mt0'>revealNeighbors(mainIndex: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mainIndex</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    A number assigned to a field, based on this the coordinates can be get.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='revealfield'>
+      revealField
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Reveals a field and checks for end game conditions.</p>
+
+
+  <div class='pre p1 fill-light mt0'>revealField(coords: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>coords</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    The coordinates for a given field.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='toggleflag'>
+      toggleFlag
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Sets or resets the flag on a field.</p>
+
+
+  <div class='pre p1 fill-light mt0'>toggleFlag(coords: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>coords</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    The coordinates for a given field.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='handleleftclick'>
+      handleLeftClick
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Handler for clicking on a field with the left mouse button.</p>
+
+
+  <div class='pre p1 fill-light mt0'>handleLeftClick()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='handlerightclick'>
+      handleRightClick
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Handler for clicking on a field with the right mouse button.</p>
+
+
+  <div class='pre p1 fill-light mt0'>handleRightClick(event: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>event</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    The click event object.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+      </div>
+    </div>
+  <script src='assets/anchor.js'></script>
+  <script src='assets/split.js'></script>
+  <script src='assets/site.js'></script>
+</body>
+</html>

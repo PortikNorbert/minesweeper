@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset='utf-8' />
+		<link type='text/css' rel='stylesheet' href='minesweeper.css'/>
+		<script type='text/javascript' src='minesweeper.js'></script>
+	</head>
+
+	<body>
+        <div class='c-minesweeper'>
+            <div class='c-minesweeper__mineFieldCt' id='minesweeper-mineField-ct'>
+                <div class='c-minesweeper__mineField' id='minesweeper-mineField'></div>
+            </div>
+
+            <div class='c-minesweeper__menu' id='minesweeper-menu'>
+                <div class='c-minesweeper__inputs'>
+                    <div>
+						<span class='c-minesweeper__label'>Columns</span>
+						<input class='c-minesweeper__param' type='number' id='minesweeper-width' min='2' max='25'  value='16' />
+					</div>
+                    <div>
+						<span class='c-minesweeper__label'>Rows</span>
+						<input class='c-minesweeper__param' type='number' id='minesweeper-height' min='2' max='25' value='16' />
+					</div>
+					<div>
+						<span class='c-minesweeper__label'>Mines</span>
+						<input class='c-minesweeper__param' type='number' id='minesweeper-mines' min='1' max='50' value='40' />
+					</div>
+                </div>
+
+                <div class='c-minesweeper__board' id='minesweeper-board'></div>
+
+                <div class='c-minesweeper__timer' id='minesweeper-timer'>00:00</div>
+                <input class='c-minesweeper__playBtn' type='button' value='Start a new game' onClick='mineSweeper.newGame()' />
+            </div>
+        </div>
+
+		<div class='o-modal' id='minesweeper-modal' onclick ='mineSweeper.hideMessage()'>
+			<div class='o-modal__overlay'></div>
+
+			<svg height='200' width='200' viewBox='0 0 200 200' class='o-modal__victory-star'>
+				<polygon points='100,15 125,70 185,65 140,105 165,170 100,130 35,170 60,105 15,65 75,70'/>
+			</svg>
+
+			<div class='o-modal__content' id='minesweeper-modal-content'></div>
+		</div>
+    </body>
+</html>
