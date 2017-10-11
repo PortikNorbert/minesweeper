@@ -1,3 +1,4 @@
+window.hasUnitTests = true;
 var unit = (function() {
 	var boardContent = '',
 		tests = new Map();
@@ -77,7 +78,7 @@ var unit = (function() {
 		return match;
 	}
 	
-	function runTests() {
+	function runTests(testScope) {
 		var result,
 			nrOfTests = 0,
 			fails = 0,
@@ -85,7 +86,7 @@ var unit = (function() {
 
 		setTimeout(function() {
 			for ([key, test] of tests) {
-				result = test(mineSweeper.scope);
+				result = test(testScope);
 
 				if (result) {
 					passes++;

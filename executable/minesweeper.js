@@ -1,5 +1,6 @@
 /**
  * How to play the game:
+ *
  * Launch the game from the executable folder by double clicking on the minesweeper.html.
  * Once the game is loaded you can complete the form. You can set how many columns, rows and mines do you want to have.
  * Start a new game by hitting the 'Start new game button.'
@@ -9,27 +10,31 @@
  * It is possible to tag a field with the right mouse button. Do this, if you suspect that there is a mine underneath. This way you can ensure that you don't click that field by accident.
  * To un-tag a field, right click on it again. 
  *
- * The game was tested on Windows only, on the following browsers:
- * - Google Chrome Version 61
- * - Mozilla Firefox Version 56
- * - Microsoft Edge Version 40
- * - Internet Explorer Version 11.68
- * 
- * These are the signs used for the different fields:
+ * Legend of signs
+ *
+ * During gameplay:
  * - dark brown field: unrevealed field, it may contain a mine
- * - light brown field: blank field, there are no mines around it
+ * - light brown field without any text: blank field, there are no mines around it
  * - light field with a number: it indicates, how many mines are in the neighboring fields
- * - a maroon field with a &#9888; sign: indicates a tagged field
- * - a black field with a &#9762; sign: a mine
- * - an orange field with a &#9872; sign: a field tagged by you, but not containing any mines
- * - a green field with a &#9873; sign: a field tagged by you containing a mine
- * - a green field with a &#9762; sign: an untapped mine
+ * - a maroon field with a &#9888; (warning) sign: indicates a flagged field
+ *
+ * After the game ends:
+ * - a black field with a &#9762; (radioactive) sign: a mine
+ * - an orange field with a &#9872; (empty flag) sign: a field flagged, but not containing any mines
+ * - a green field with a &#9873; (filled flag) sign: a field flagged and containing a mine
+ * - a green field with a &#9762; (radioactive) sign: a mine not touched nor flagged
+ *
+ * The game was tested on Windows only, on the following browsers:
+ * - Google Chrome Version 61.0.3163.100
+ * - Mozilla Firefox Version 56.0
+ * - Microsoft Edge Version 40.15063.0.0
+ * - Internet Explorer Version 11.608.15063.0
  */
-var mineSweeper = (function() {
+var mineSweeper = (function(isPublic) {
 	/**
-	 * The minesweeper variable contains all the functionalities of the game.
+	 * The minesweeper scope variable contains all the functionalities of the game.
 	 * There are several key variables accesible from outside of the methods:
-	 * - {function} timer - The time counting mechanics are kept in this variable, it is a setTimeout function
+	 * - {function} clock - The time counting mechanics are kept in this variable, it is a setTimeout function
 	 * - {number} nrOfRows - How many rows the minefield will have.
 	 * - {number} nrOfMines - How many mines the minefield will have.
 	 * - {number} nrOfFields - How many clickable fields the minefield will have.
@@ -39,74 +44,105 @@ var mineSweeper = (function() {
 	 * - {number} fieldSize - The width and height of a field used to give a dynamic size to the minesweeper.
 	 */
 
-	var scope = this;
+	var getInputValue, setInputValue,
+		showMessage, hideMessage,
+		getFieldCoords, getFieldIndex,
+		getState, setFieldState,
+		formatTime, getClockTime, runClock, initClock,
+		getRandomNumberBetween, getMineIndexes,
+		createField, generateMineField, setGameVariables, setSize,
+		resetGame, newGame, gameOver, isVictory, victory,
+		isExistingField, getNeighboringMines,
+		resolveField, resolveAllFields, revealNeighbors, revealField, toggleFlag,
+		handleLeftClick, handleRightClick, scope = this;
 
 	scope.game = {};
 
 	/**
-	 * Shows a message in a modal window, game over and victory messages are shown by this method.
+	 * Tells the value of an input field as a number.
+	 * @alias getInputValue
+	 * @param {string} id - The id attribute of the field.
+	 * @returns {number} The value of an input field.
+	 */
+	getInputValue = function(id) {
+		var value = document.getElementById(id).value;
+
+		return Number(value);
+	};
+
+	/**
+	 * Sets the value of an input field.
+	 * @alias setInputValue
+	 * @param {string} id - The id of the input field.
+	 * @param {string/number} value - The value to be set.
+	 */
+	setInputValue = function(id, value) {
+		document.getElementById(id).value = value;
+	};
+
+	/**
+	 * Shows a modal window with a message in it.
 	 * @alias showMessage
 	 * @param {string} msg - The message to be displayed.
-	 * @param {boolean} victory - A variables indicating if the message is a victory message.
 	 */
-	function showMessage(msg, victory) {
-		var modalClass = victory ? 'o-modal o-modal--open o-modal--victory' : 'o-modal o-modal--open';
+	showMessage = function(msg) {
+		var modalClass = scope.game.won ? 'o-modal o-modal--open o-modal--victory' : 'o-modal o-modal--open';
 
 		document.getElementById('minesweeper-modal-content').innerText = msg;
 		document.getElementById('minesweeper-modal').setAttribute('class', modalClass);
 	}
 
 	/**
-	 * Hides the messages modal and empties it's content.
+	 * Hides the modal window and deletes it's content.
 	 * @alias hideMessage
 	 */
-	function hideMessage() {
+	hideMessage = function() {
 		var animationDelay = 250;
 
 		document.getElementById('minesweeper-modal').setAttribute('class', 'o-modal');
 		setTimeout(function() {
 			document.getElementById('minesweeper-modal-content').innerText = '';
 		}, animationDelay);
-	}
+	};
 
 	/**
-	 * Transforms a simple number to a pair of coordinates, which defines a field
+	 * Tells the map to a field's state based on an field's order.
 	 * @alias getFieldCoords
-	 * @param {number} idx - The index of a field, this represents the field's order on the minefield.
-	 * @returns {array} An array of 2 numbers defining the position of a field.
+	 * @param {number} index - The order number of a field.
+	 * @returns {array} An array of 2 numbers used to access states in the field map.
 	 */
-	function getFieldCoords(idx) {
-		return [Math.ceil(idx/scope.nrOfColumns), idx % scope.nrOfColumns || scope.nrOfColumns];
-	}
+	getFieldCoords = function(index) {
+		return [Math.ceil(index / scope.nrOfColumns), index % scope.nrOfColumns || scope.nrOfColumns];
+	};
 
 	/**
-	 * Transforms the array defining the field's position to a number (the order number of the field).
+	 * Tells the order number of a field based on a field map array.
 	 * @alias getFieldIndex
-	 * @param {array} coords - An array defining the position of field, also the map to the field's flags.
+	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
 	 * @returns {number} Returns the order number of a field.
 	 */
-	function getFieldIndex(coords) {
+	getFieldIndex = function(coords) {
 		return (coords[0] - 1) * scope.nrOfColumns + coords[1];
-	}
+	};
 
 	/**
-	 * Gets the state of a field, the state contains 3 flags.
+	 * Tells the state of a field.
 	 * @alias getState
-	 * @param {array} coords - An array of 2 numbers representing the map to the field's state.
+	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
 	 * @returns {object} Returns an object with 3 fields (if the field was revealed, if it is a mine and if it has a flag put on it).
 	 */
-	function getState(coords) {
+	getState = function(coords) {
 		return scope.fieldMap[coords[0]][coords[1]];
-	}
+	};
 
 	/**
-	 * Sets the field's appearance on the page by applying a certain class. Also inserts content.
+	 * Sets the field's appearance on the page by applying a class.
 	 * @alias setFieldState
-	 * @param {array} coords - An array of 2 numbers representing the position of the field.
-	 * @param {string} type - The type of the field, map to a css class name.
-	 * @param {string} content - The character to be shown in field.
+	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
+	 * @param {string} type - The type of the field, maps to a css class name.
+	 * @param {string} content - The character to be shown in the field.
 	 */
-	function setFieldState(coords, type, content) {
+	setFieldState = function(coords, type, content) {
 		var fieldCls = {
 				hiden: 'c-minesweeper__field',
 				blank: 'c-minesweeper__field c-minesweeper__field--blank',
@@ -122,76 +158,78 @@ var mineSweeper = (function() {
 
 		field.innerHTML = content;
 		field.setAttribute('class', fieldCls[type]);
-	}
+	};
 
 	/**
-	 * Formats the output time for the timer. I the number is smaller than 10 it adds a leading 0.
+	 * Formats the output time for the clock. If the number is smaller than 10 it adds a leading 0.
 	 * @alias formatTime
-	 * @param {number} t - The quantity of minutes or seconds
+	 * @param {number} time - The quantity of minutes or seconds
 	 * @returns {string} Returns the formatted number.
 	 */
-	function formatTime(t) {
-		return t < 10 ? '0'.concat(t) : t;
-	}
+	formatTime = function(time) {
+		return time < 10 ? '0'.concat(time) : time;
+	};
 
 	/**
-	 * Getter for the elapsed time. Used when the game ends.
-	 * @alias getTime
+	 * Tells the time from the clock.
+	 * @alias getClockTime
 	 * @returns {string} Returns the time spent on solving the minefield.
 	 */
-	function getTime() {
+	getClockTime = function() {
 		return document.getElementById('minesweeper-timer').innerText;
-	}
+	};
 
 	/**
-	 * Runs the timer until the game is lost or won.
-	 * @alias runTime
-	 * @param {object} timerfield - The element from the DOM, where the timer is displayed.
+	 * Runs the clock until the game is lost or won.
+	 * @alias runClock
+	 * @param {object} clockField - The element from the DOM, where the clock is displayed.
 	 * @param {number} minutes - The minutes already spent on the current session of the game.
 	 * @param {number} seconds - The additional seconds already spent on the current session of the game.
 	 */
-	function runTime(timerField, minutes, seconds) {
+	runClock = function(clockField, minutes, seconds) {
 		seconds++;
 		if (seconds === 60) {
 			seconds = 0;
 			minutes++;
 		}
-		timerField.innerText = formatTime(minutes).concat(':', formatTime(seconds));
-		scope.timer = setTimeout(function() {
-			if (scope.game.started) {
-				runTime(timerField, minutes, seconds);
+
+		clockField.innerText = formatTime(minutes).concat(':', formatTime(seconds));
+
+		scope.clock = setTimeout(function() {
+			if (scope.game.active) {
+				runClock(clockField, minutes, seconds);
 			}
 		}, 1000);
-	}
+	};
 
 	/**
-	 * Initializes the timer once the game is started.
-	 * @alias initTimer
+	 * Initializes the clock once the game becomes active.
+	 * @alias initClock
 	 */
-	function initTimer() {
+	initClock = function() {
 		var minutes = 0, seconds = 0,
-			timerField = document.getElementById('minesweeper-timer');
+			clockField = document.getElementById('minesweeper-timer');
 
-		runTime(timerField, minutes, seconds);
+		runClock(clockField, minutes, seconds);
 	}
 
 	/**
-	 * Generates a random number in a given interval.
+	 * Generates a random number from the given interval.
 	 * @alias getRandomNumberBetween
 	 * @param {number} min - The minimum value from the interval.
 	 * @param {number} max - The maximum value from the interval.
 	 * @returns {number} Returns a random number.
 	 */
-	function getRandomNumberBetween(min, max) {
+	getRandomNumberBetween = function(min, max) {
 		return Math.round(Math.random() * (max - min) + min);
-	}
+	};
 
 	/**
-	 * Generates the ordered position of the mines.
+	 * Generates the index of the mines.
 	 * @alias getMineIndexes
 	 * @returns {Set} Returns a set of numbers, each representing a single mine.
 	 */
-	function getMineIndexes() {
+	getMineIndexes = function() {
 		var minNrOfFields = 1,
 			mineIndexes = new Set();
 
@@ -200,35 +238,35 @@ var mineSweeper = (function() {
 		}
 
 		return mineIndexes;
-	}
+	};
 
 	/**
-	 * Creates a new DOM element which serves as a field. Adds the events for the field.
+	 * Creates a new DOM element (field) and inserts it into the DOM.
 	 * @alias createField
-	 * @param {number} i - The ordered index of the field to be created.
-	 * @returns {object} Returns a new field.
+	 * @param {object} mineField - The element which contains all the fields.
+	 * @param {number} index - The order number of a field.
 	 */
-	function createField(i) {
+	createField = function(mineField, index) {
 		var field = document.createElement('div');
 
-		field.setAttribute('index', i);
+		field.setAttribute('index', index);
 		field.setAttribute('class', 'c-minesweeper__field');
-		field.setAttribute('id', 'minesweeper-field'.concat(i));
+		field.setAttribute('id', 'minesweeper-field'.concat(index));
 		field.setAttribute('style', 'width: '.concat(scope.fieldSize, 'px; height: ', scope.fieldSize, 'px;'));
 
-		return field;
-	}
+		mineField.appendChild(field);
+	};
 
 	/**
-	 * It generates the minefield by creating a map with each field's flags and appends each field to the DOM.
+	 * Generates the field map, which contains each field's state.
 	 * @alias generateMineField
-	 * @param {object} mineField - A DOM node where the fields will be inserted into.
+	 * @param {object} mineField - The element which contains all the fields.
 	 */
-	function generateMineField(mineField) {
+	generateMineField = function(mineField) {
 		var i = 1,
 			column,
 			row = 0,
-			mineIndexes = getMineIndexes();
+			mineIndexes = scope.getMineIndexes();
 
 		scope.fieldMap = [];
 
@@ -245,40 +283,16 @@ var mineSweeper = (function() {
 				mine: mineIndexes.has(i)
 			};
 
-			mineField.appendChild(createField(i));
+			createField(mineField, i);
 		}
-	}
+	};
 
 	/**
-	 * Gets the value of an input field.
-	 * @alias getInputValue
-	 * @param {string} id - The id attribute of the field.
-	 * @param {boolean} returnNumber - If the return value should be number or not.
-	 * @returns {string/number} The value of an input field.
-	 */
-	function getInputValue(id, returnNumber) {
-		var value = document.getElementById(id).value;
-
-		return returnNumber ? Number(value) : value;
-	}
-
-	/**
-	 * Sets the value of an input field.
-	 * @alias setInputValue
-	 * @param {string} id - The id of the input field.
-	 * @param {string/number} value - The value to be set.
-	 */
-	function setInputValue(id, value) {
-		document.getElementById(id).value = value;
-	}
-
-	/**
-	 * Reads and sets the input parameters for generating the minefield.
-	 * In case there are any not recommended settings, more appropriate values will be set.
+	 * Reads, adjusts and sets the input parameters for the minefield.
 	 * @alias setGameVariables
 	 */
-	function setGameVariables() {
-		scope.nrOfRows = getInputValue('minesweeper-height', true);
+	setGameVariables = function() {
+		scope.nrOfRows = getInputValue('minesweeper-height');
 		if (scope.nrOfRows < 2) {
 			scope.nrOfRows = 2;
 			setInputValue('minesweeper-height', scope.nrOfRows);
@@ -287,7 +301,7 @@ var mineSweeper = (function() {
 			setInputValue('minesweeper-height', scope.nrOfRows);
 		}
 
-		scope.nrOfColumns = getInputValue('minesweeper-width', true);
+		scope.nrOfColumns = getInputValue('minesweeper-width');
 		if (scope.nrOfColumns < 2) {
 			scope.nrOfColumns = 2;
 			setInputValue('minesweeper-width', scope.nrOfColumns);
@@ -298,7 +312,7 @@ var mineSweeper = (function() {
 
 		scope.nrOfFields = scope.nrOfRows * scope.nrOfColumns;
 
-		scope.nrOfMines = getInputValue('minesweeper-mines', true);
+		scope.nrOfMines = getInputValue('minesweeper-mines');
 		if (scope.nrOfMines >= scope.nrOfFields) {
 			scope.nrOfMines = scope.nrOfFields - 1;
 			setInputValue('minesweeper-mines', scope.nrOfMines);
@@ -306,14 +320,14 @@ var mineSweeper = (function() {
 			scope.nrOfMines = 1;
 			setInputValue('minesweeper-mines', scope.nrOfMines);
 		}
-	}
+	};
 
 	/**
-	 * Resets and resizes the minefield container.
+	 * Sets the size of the minefield.
 	 * @alias setSize
-	 * @param {object} mineField - A DOM node where the fields will be inserted into.
+	 * @param {object} mineField - The element which contains all the fields.
 	 */
-	function setSize(mineField) {
+	setSize = function(mineField) {
 		var baseLength, fieldHeight, fieldWidth, fieldRatio, mineFieldSize, fieldMargin = 2;
 
 		menuWidth = Math.ceil(document.getElementById('minesweeper-menu').getClientRects()[0].width),
@@ -323,28 +337,30 @@ var mineSweeper = (function() {
 		mineFieldSize = 'opacity: 1; max-width: '.concat(scope.nrOfColumns * (scope.fieldSize + fieldMargin), 'px; max-height: ', scope.nrOfRows * (scope.fieldSize + fieldMargin),'px;');
 
 		mineField.setAttribute('style', mineFieldSize);
-	}
+	};
 
 	/**
-	 * Resets the game state. Stops the timer.
+	 * Resets the game and stops the clock.
 	 * @alias resetGame
+	 * @param {object} mineField - The element which contains all the fields.
 	 */
-	function resetGame(mineField) {
+	resetGame = function(mineField) {
 		scope.game = {
+			won: null,
 			reveals: 0,
-			started: true
+			active: true,
 		};
 
 		mineField.innerText = '';
 
-		clearTimeout(scope.timer);
-	}
+		clearTimeout(scope.clock);
+	};
 
 	/**
-	 * Initializes a new game by resetting variables and regenerating the minefield.
+	 * Starts a new game.
 	 * @alias newGame
 	 */
-	function newGame() {
+	newGame = function() {
 		var mineField = document.getElementById('minesweeper-mineField');
 
 		resetGame(mineField);
@@ -353,57 +369,57 @@ var mineSweeper = (function() {
 		setSize(mineField);
 		generateMineField(mineField);
 
-		initTimer();
+		initClock();
 
 		mineField.addEventListener('click', handleLeftClick);
 		mineField.addEventListener('contextmenu', handleRightClick);
-	}
+	};
 
 	/**
-	 * Checks if on the given coordinats exists a field.
-	 * @alias isExistingNeighbor
-	 * @param {array} coords - A pair of numbers that should map to a field in the DOM and the field map.
-	 * @returns {boolean} It is true if the fields exists. False if not.
+	 * Checks if the given coordinates represent an existing a field.
+	 * @alias isExistingField
+	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
+	 * @returns {boolean} It is true if the field exists.
 	 */
-	function isExistingNeighbor(coords) {
+	isExistingField = function(coords) {
 		return 0 < coords[0] && coords[0] <= scope.nrOfRows && 0 < coords[1] && coords[1] <= scope.nrOfColumns;
-	}
+	};
 
 	/**
-	 * Determines the theoretical position of the sourrounding fields.
+	 * Collects a list of suspected field map coordinates of any neighboring fields.
 	 * @alias getNeighborIndexes
-	 * @param {array} - A pair of numbers showing the position of the selected field.
-	 * @returns {array} - A list of arrays, each representing a coordinate to a neighbor.
+	 * @param {array} mainCoords - The selected field's map to it's state in the field map.
+	 * @returns {array} A list of arrays, each used to access states in the field map.
 	 */
-	function getNeighborIndexes(coords) {
+	getNeighborIndexes = function(mainCoords) {
 		var indexes = [],
 			neighborPositions = [
-				[coords[0]-1, coords[1]-1],
-				[coords[0]-1, coords[1]],
-				[coords[0]-1, coords[1]+1],
-				[coords[0], coords[1]+1],
-				[coords[0]+1, coords[1]+1],
-				[coords[0]+1, coords[1]],
-				[coords[0]+1, coords[1]-1],
-				[coords[0], coords[1]-1]
+				[mainCoords[0]-1, mainCoords[1]-1],
+				[mainCoords[0]-1, mainCoords[1]],
+				[mainCoords[0]-1, mainCoords[1]+1],
+				[mainCoords[0], mainCoords[1]+1],
+				[mainCoords[0]+1, mainCoords[1]+1],
+				[mainCoords[0]+1, mainCoords[1]],
+				[mainCoords[0]+1, mainCoords[1]-1],
+				[mainCoords[0], mainCoords[1]-1]
 			];
 
 		neighborPositions.map(function(pos) {
-			if (isExistingNeighbor(pos)) {
+			if (isExistingField(pos)) {
 				indexes.push(pos);
 			}
 		});
 
 		return indexes;
-	}
+	};
 
 	/**
-	 * Check on how many mines are in the neighboring fields.
-	 * @alias getNeighborsMines
-	 * @param {array} mainCoords - Represents a coordinate for the selected field.
+	 * Tell the number of mines in the neighboring fields.
+	 * @alias getNeighboringMines
+	 * @param {array} mainCoords - The selected field's map to it's state in the field map.
 	 * @returns {number} Returns the number of mines in the neighboring fields.
 	 */
-	function getNeighborsMines(mainCoords) {
+	getNeighboringMines = function(mainCoords) {
 		var mines = 0,
 			neighborIndexes = getNeighborIndexes(mainCoords);
 
@@ -412,22 +428,14 @@ var mineSweeper = (function() {
 		});
 
 		return mines;
-	}
+	};
 
 	/**
 	 * Reveals a field with all it's states. It changes only the looks and it does not propagate to other fields.
 	 * @alias resolveField
-	 * It reveals the following statuses: 
-	 * - mines: mines not found yet
-	 * - flagged mines: mines that have been flagged as suspect
-	 * - untapped mines: mines the user did not tap and have been revealed for the user
-	 * - mistaken mines: fields that have been tagged as suspect, but were not mines
-	 * - dangerous fields: fields adjacent to mines
-	 * - blank fields: fields that do not contain a mine and nor their neighbors have a mine
-	 * @param {array} coords - A pair of numbers representing the coordinates of the field to be revealed.
-	 * @param {boolean} victory - A flag showing if the game ended with victory or not.
+	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
 	 */
-	function resolveField(coords, victory) {
+	resolveField = function(coords) {
 		var neighborMines,
 			state = getState(coords);
 
@@ -436,13 +444,13 @@ var mineSweeper = (function() {
 			if (state.mine) {
 				if (state.flagged) {
 					setFieldState(coords, 'flagGood', '&#9873;');
-				} else if (victory) {
+				} else if (scope.game.won) {
 					setFieldState(coords, 'mineGood', '&#9762;');
 				} else {
 					setFieldState(coords, 'mine', '&#9762;');
 				}
 			} else {
-				neighborMines = getNeighborsMines(coords);
+				neighborMines = getNeighboringMines(coords);
 				if (state.flagged) {
 					setFieldState(coords, 'flagBad', '&#9872;');
 				} else if (neighborMines) {
@@ -452,62 +460,70 @@ var mineSweeper = (function() {
 				}
 			}
 		}
-	}
+	};
 
 	/**
-	 * Reveals all fields to the player in case the game is over.
-	 * @alias revealAll
-	 * @param {boolean} victory - A flag showing if the game ended with victory or not.
+	 * Resolves all fields to the player, showing what each field is.
+	 * @alias resolveAllFields
 	 */
-	function revealAll(victory) {
+	resolveAllFields = function() {
 		for (var i = 1; i<= scope.nrOfFields; i++) {
-			resolveField(getFieldCoords(i), victory);
+			resolveField(getFieldCoords(i));
 		}
-	}
+	};
 
 	/**
-	 * It is the event when the game ends. Interaction is stopped, all fields are evaluated and a message is shown.
+	 * Sets the game over state.
 	 * @alias gameOver
 	 */
-	function gameOver() {
-		revealAll(false);
-		scope.game.started = false;
+	gameOver = function() {
+		scope.game.active = false;
+		scope.game.won = false;
+		resolveAllFields();
 		showMessage('You have tapped a mine, the Game is Over.', false);
-	}
+	};
 
 	/**
-	 * Checks if victory conditions are met. If they are, victory is announced.
-	 * @alias checkVictoryCondition
+	 * Checks if the conditions are met for wining the game.
+	 * @alias isVictory
+	 * @returns {boolean} Returns true if the game is won.
 	 */
-	function checkVictoryCondition() {
-		var msg = "You've revealed all cells without tapping a single mine in ".concat(getTime(), ' seconds! Congratulations!');
-
-		if (scope.game.reveals === scope.nrOfFields - scope.nrOfMines) {
-			revealAll(true);
-			showMessage(msg, true);
-			scope.game.started = false;
-		}
-	}
+	isVictory = function() {
+		return scope.game.reveals === scope.nrOfFields - scope.nrOfMines;
+	};
 
 	/**
-	 * Reveal any fields that are in the immediate neighborhood.
+	 * Sets the game won state.
+	 * @alias victory
+	 */
+	victory = function() {
+		var msg = "You've revealed all cells without tapping a single mine in ".concat(getClockTime(), ' seconds! Congratulations!');
+
+		scope.game.active = false;
+		scope.game.won = true;
+		resolveAllFields();
+		showMessage(msg, true);
+	};
+
+	/**
+	 * Reveal the neighboring fields of a field selected.
 	 * @alias revealNeighbors
-	 * @param {number} mainIndex - A number assigned to a field, based on this the coordinates can be get.
+	 * @param {number} mainIndex - The order number of the selected field.
 	 */
-	function revealNeighbors(mainIndex) {
+	revealNeighbors = function(mainIndex) {
 		var neighborIndexes = getNeighborIndexes(mainIndex);
 
 		neighborIndexes.map(function(coords) {
 			revealField(coords);
 		});
-	}
+	};
 
 	/**
 	 * Reveals a field and checks for end game conditions.
 	 * @alias revealField
-	 * @param {array} coords - The coordinates for a given field.
+	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
 	 */
-	function revealField(coords) {
+	revealField = function(coords) {
 		var neighborMines,
 			state = getState(coords);
 
@@ -519,24 +535,26 @@ var mineSweeper = (function() {
 				setFieldState(coords, 'mine', '&#9762;');
 				gameOver();
 			} else {
-				neighborMines = getNeighborsMines(coords);
+				neighborMines = getNeighboringMines(coords);
 				if (neighborMines) {
 					setFieldState(coords, 'danger', neighborMines);
 				} else {
 					setFieldState(coords, 'blank', '');
 					revealNeighbors(coords);
 				}
-				checkVictoryCondition();
+				if (isVictory()) {
+					victory();
+				}
 			}
 		}
-	}
+	};
 
 	/**
 	 * Sets or resets the flag on a field.
 	 * @alias toggleFlag
-	 * @param {array} coords - The coordinates for a given field.
+	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
 	 */
-	function toggleFlag(coords) {
+	toggleFlag = function(coords) {
 		var state = getState(coords);
 
 		if (!state.revealed) {
@@ -548,56 +566,52 @@ var mineSweeper = (function() {
 				setFieldState(coords, 'flag', '&#9888;');
 			}
 		}
-	}
+	};
 
 	/**
 	 * Handler for clicking on a field with the left mouse button.
 	 * @alias handleLeftClick
+	 * @param {object} event - The click event object.
 	 */
-	function handleLeftClick(event) {
+	handleLeftClick = function(event) {
 		if (event.target.getAttribute('id') !== 'minesweeper-mineField') {
 			revealField(getFieldCoords(event.target.getAttribute('index')));
 		}
-	}
+	};
 
 	/**
 	 * Handler for clicking on a field with the right mouse button.
 	 * @alias handleRightClick
 	 * @param {object} event - The click event object.
 	 */
-	function handleRightClick(event) {
-		if (event.target.getAttribute('id') !== 'minesweeper-mineField' && scope.game.started) {
+	handleRightClick = function(event) {
+		if (event.target.getAttribute('id') !== 'minesweeper-mineField' && scope.game.active) {
 			toggleFlag(getFieldCoords(event.target.getAttribute('index')));
 		}
 
 		event.preventDefault();
-	}
+	};
 	
 	scope.setGameVariables = setGameVariables;
-	scope.showMessage = showMessage;
 	scope.getFieldCoords = getFieldCoords;
 	scope.getFieldIndex = getFieldIndex;
 	scope.getState = getState;
-	scope.setFieldState = setFieldState;
 	scope.formatTime = formatTime;
-	scope.getMineIndexes = getMineIndexes;
 	scope.generateMineField = generateMineField;
 	scope.resetGame = resetGame;
-	scope.isExistingNeighbor = isExistingNeighbor;
-	scope.getNeighborIndexes = getNeighborIndexes;
-	scope.getNeighborsMines = getNeighborsMines;
-	scope.resolveField = resolveField;
-	scope.gameOver = gameOver;
-	scope.checkVictoryCondition = checkVictoryCondition;
-	scope.revealNeighbors = revealNeighbors;
-	scope.revealField = revealField;
 	scope.toggleFlag = toggleFlag;
+	scope.isExistingField = isExistingField;
+	scope.getNeighborIndexes = getNeighborIndexes;
+	scope.getNeighboringMines = getNeighboringMines;
+	scope.gameOver = gameOver;
+	scope.revealField = revealField;
 	scope.setInputValue = setInputValue;
 	scope.getInputValue = getInputValue;
+	scope.getMineIndexes = getMineIndexes;
 
 	return {
-		scope: scope,
 		newGame: newGame,
-		hideMessage: hideMessage
-	}
-})();
+		hideMessage: hideMessage,
+		scope: isPublic ? scope : null
+	};
+})(window.hasUnitTests);
