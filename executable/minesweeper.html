@@ -16,15 +16,15 @@
                 <div class='c-minesweeper__inputs'>
                     <div>
 						<span class='c-minesweeper__label'>Columns</span>
-						<input class='c-minesweeper__param' type='number' id='minesweeper-width' min='2' max='25'  value='16' />
+						<input class='c-minesweeper__param' type='number' id='minesweeper-width' min='2' max='25'  value='16' onkeypress='mineSweeper.handleKeyPress(event)' />
 					</div>
                     <div>
 						<span class='c-minesweeper__label'>Rows</span>
-						<input class='c-minesweeper__param' type='number' id='minesweeper-height' min='2' max='25' value='16' />
+						<input class='c-minesweeper__param' type='number' id='minesweeper-height' min='2' max='25' value='16' onkeypress='mineSweeper.handleKeyPress(event)' />
 					</div>
 					<div>
 						<span class='c-minesweeper__label'>Mines</span>
-						<input class='c-minesweeper__param' type='number' id='minesweeper-mines' min='1' max='50' value='40' />
+						<input class='c-minesweeper__param' type='number' id='minesweeper-mines' min='1' max='50' value='40' onkeypress='mineSweeper.handleKeyPress(event)' />
 					</div>
                 </div>
 

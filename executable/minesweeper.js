@@ -54,7 +54,7 @@ var mineSweeper = (function(isPublic) {
 		resetGame, newGame, gameOver, isVictory, victory,
 		isExistingField, getNeighboringMines,
 		resolveField, resolveAllFields, revealNeighbors, revealField, toggleFlag,
-		handleLeftClick, handleRightClick, scope = this;
+		handleLeftClick, handleRightClick, handleKeyPress, scope = this;
 
 	scope.game = {};
 
@@ -109,7 +109,7 @@ var mineSweeper = (function(isPublic) {
 	 * Tells the map to a field's state based on an field's order.
 	 * @alias getFieldCoords
 	 * @param {number} index - The order number of a field.
-	 * @returns {array} An array of 2 numbers used to access states in the field map.
+	 * @returns {array} An array of 2 numbers used to access a field's state in the field map.
 	 */
 	getFieldCoords = function(index) {
 		return [Math.ceil(index / scope.nrOfColumns), index % scope.nrOfColumns || scope.nrOfColumns];
@@ -118,7 +118,7 @@ var mineSweeper = (function(isPublic) {
 	/**
 	 * Tells the order number of a field based on a field map array.
 	 * @alias getFieldIndex
-	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
+	 * @param {array} coords - An array of 2 numbers used to access a field's state in the field map.
 	 * @returns {number} Returns the order number of a field.
 	 */
 	getFieldIndex = function(coords) {
@@ -128,7 +128,7 @@ var mineSweeper = (function(isPublic) {
 	/**
 	 * Tells the state of a field.
 	 * @alias getState
-	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
+	 * @param {array} coords - An array of 2 numbers used to access a field's state in the field map.
 	 * @returns {object} Returns an object with 3 fields (if the field was revealed, if it is a mine and if it has a flag put on it).
 	 */
 	getState = function(coords) {
@@ -138,7 +138,7 @@ var mineSweeper = (function(isPublic) {
 	/**
 	 * Sets the field's appearance on the page by applying a class.
 	 * @alias setFieldState
-	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
+	 * @param {array} coords - An array of 2 numbers used to access a field's state in the field map.
 	 * @param {string} type - The type of the field, maps to a css class name.
 	 * @param {string} content - The character to be shown in the field.
 	 */
@@ -378,7 +378,7 @@ var mineSweeper = (function(isPublic) {
 	/**
 	 * Checks if the given coordinates represent an existing a field.
 	 * @alias isExistingField
-	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
+	 * @param {array} coords - An array of 2 numbers used to access a field's state in the field map.
 	 * @returns {boolean} It is true if the field exists.
 	 */
 	isExistingField = function(coords) {
@@ -389,7 +389,7 @@ var mineSweeper = (function(isPublic) {
 	 * Collects a list of suspected field map coordinates of any neighboring fields.
 	 * @alias getNeighborIndexes
 	 * @param {array} mainCoords - The selected field's map to it's state in the field map.
-	 * @returns {array} A list of arrays, each used to access states in the field map.
+	 * @returns {array} A list of arrays, each used to access a field's state in the field map.
 	 */
 	getNeighborIndexes = function(mainCoords) {
 		var indexes = [],
@@ -433,7 +433,7 @@ var mineSweeper = (function(isPublic) {
 	/**
 	 * Reveals a field with all it's states. It changes only the looks and it does not propagate to other fields.
 	 * @alias resolveField
-	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
+	 * @param {array} coords - An array of 2 numbers used to access a field's state in the field map.
 	 */
 	resolveField = function(coords) {
 		var neighborMines,
@@ -521,7 +521,7 @@ var mineSweeper = (function(isPublic) {
 	/**
 	 * Reveals a field and checks for end game conditions.
 	 * @alias revealField
-	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
+	 * @param {array} coords - An array of 2 numbers used to access a field's state in the field map.
 	 */
 	revealField = function(coords) {
 		var neighborMines,
@@ -552,7 +552,7 @@ var mineSweeper = (function(isPublic) {
 	/**
 	 * Sets or resets the flag on a field.
 	 * @alias toggleFlag
-	 * @param {array} coords - An array of 2 numbers used to access states in the field map.
+	 * @param {array} coords - An array of 2 numbers used to access a field's state in the field map.
 	 */
 	toggleFlag = function(coords) {
 		var state = getState(coords);
@@ -591,7 +591,18 @@ var mineSweeper = (function(isPublic) {
 
 		event.preventDefault();
 	};
-	
+
+	/**
+	 * Handler for pressing enter while on an input field.
+	 * @alias handleKeyPress
+	 * @param {object} event - The keypress event object.
+	 */
+	handleKeyPress = function(event) {
+		if (event.key === 'Enter') {
+			newGame();
+		}
+	};
+
 	scope.setGameVariables = setGameVariables;
 	scope.getFieldCoords = getFieldCoords;
 	scope.getFieldIndex = getFieldIndex;
@@ -612,6 +623,7 @@ var mineSweeper = (function(isPublic) {
 	return {
 		newGame: newGame,
 		hideMessage: hideMessage,
-		scope: isPublic ? scope : null
+		scope: isPublic ? scope : null,
+		handleKeyPress: handleKeyPress
 	};
 })(window.hasUnitTests);
