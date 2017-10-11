@@ -432,7 +432,7 @@ var mineSweeper = (function() {
 				if (state.flagged) {
 					setFieldState(coords, 'flagGood', '&#9873;');
 				} else if (victory) {
-					mineGood(coords, 'mineGood', '&#9762;');
+					setFieldState(coords, 'mineGood', '&#9762;');
 				} else {
 					setFieldState(coords, 'mine', '&#9762;');
 				}
