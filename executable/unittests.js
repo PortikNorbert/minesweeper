@@ -2,45 +2,71 @@ var utest = (function() {
 	var boardContent = '';
 
 	function log(...msg) {
-		var board = document.getElementById('testboard');
+		var i = 0,
+			message = '';
 
-		boardContent = boardContent.concat('\n', msg.join(''));
-		board.value = boardContent;
+		boardContent = boardContent.concat('<br/>');
+		for (m of msg) {
+			if (m !== undefined) {
+				boardContent = boardContent.concat(m.toString());
+			} else {
+				boardContent = boardContent.concat('undefined');
+			}
+		}
+		boardContent = boardContent.concat('<br/>');
+
+		document.getElementById('testboard').innerHTML = boardContent;
 	}
-
+	
 	function getMockDiv() {
 		return document.getElementById('mockDiv');
 	}
 	
 	function mockGameVariables(x, y, m) {
-		mineSweeper.setInputValue('minesweeper-height', x);
-		mineSweeper.setInputValue('minesweeper-width', y);
-		mineSweeper.setInputValue('minesweeper-mines', m);
+		mineSweeper.scope.setInputValue('minesweeper-height', x);
+		mineSweeper.scope.setInputValue('minesweeper-width', y);
+		mineSweeper.scope.setInputValue('minesweeper-mines', m);
 	}
 
-	function mock(fn, mockFn) {
-		
-	}
-	
 	function checkEqual(currentValue, expectedValue) {
 		var match = currentValue === expectedValue;
 
-		if (match) {
-			log('Currentvalue is equal to expectedvalue.');
-		} else {
-			log('FAIL: ', currentValue, ' is not equal to ', expectedValue);
+		if (!match) {
+			log('<i>Failed: ', currentValue, ' is not equal to ', expectedValue, '</i>');
 		}
 
 		return match;
 	}
-	
+
+	function checkArrayEqual(currentArr, expectedArr) {
+		var i = 0,
+			match = currentArr.length === expectedArr.length;
+
+		for (i; i < currentArr.length; i++) {
+			if(currentArr[i] !== expectedArr[i]) {
+				log('<i>Failed: ', currentArr[i], ' is not equal to ', expectedArr[i], '</i>');
+				match = false;
+			}
+		}
+
+		return match;
+	}
+
 	function checkType(currentValue, expectedValue) {
 		var match = typeof currentValue === expectedValue;
 
-		if (match) {
-			log('Type is matching.');
-		} else {
-			log('FAIL: ', currentValue, ' is not of type ', expectedValue);
+		if (!match) {
+			log('<i>Failed: ', currentValue, ' is not of type ', expectedValue, '</i>');
+		}
+
+		return match;
+	}
+
+	function checkIsGreater(currentValue, expectedValue) {
+		var match = currentValue > expectedValue;
+
+		if (!match) {
+			log('<i>Failed: ', currentValue, ' is not greater than ', expectedValue, '</i>');
 		}
 
 		return match;
@@ -53,26 +79,28 @@ var utest = (function() {
 			passes = 0;
 
 		for ([key, test] of tests) {
-			result = test();
+			result = test(mineSweeper.scope);
 
 			if (result) {
 				passes++;
+				log(key, ' ... passed.');
 			} else {
 				fails++;
-				log('TEST: "', key, '" has failed.');
+				log('<span style="color:red;">', key, ' ... failed.</span>');
 			}
 			nrOfTests++;
 		}
 
-		log('\n', 'From ', nrOfTests, ' test ', passes, ' passed and ', fails, ' failed.');
+		log('\n', '<b>From ', nrOfTests, ' tests ', passes, ' passed and ', fails, ' failed.</b>');
 	}
 
 	return {
 		log: log,
-		mock: mock,
 		runTests: runTests,
 		checkEqual: checkEqual,
 		checkType: checkType,
+		checkIsGreater: checkIsGreater,
+		checkArrayEqual: checkArrayEqual,
 		getMockDiv: getMockDiv,
 		mockGameVariables: mockGameVariables
 	}
@@ -81,44 +109,62 @@ var utest = (function() {
 
 
 setTimeout(function() {
-	utest.runTests();
+	utest.runTests.call(utest);
 }, 500);
 
 var tests = new Map();
 
-tests.set('If number of fields is calculated properly', function() {
+tests.set('Game reset', function(scope) {
+	var resetCheck,
+		actionCheck,
+		initialCheck = utest.checkEqual(scope.game.reveals, undefined);
+
+	scope.resetGame(utest.getMockDiv());
+
+	resetCheck = utest.checkEqual(scope.game.reveals, 0);
+
+	scope.setGameVariables();
+	scope.generateMineField(utest.getMockDiv());
+	scope.revealField([1,1]);
+	actionCheck = utest.checkIsGreater(scope.game.reveals, 0);
+
+	return  initialCheck && resetCheck && actionCheck;
+});
+
+tests.set('Setting game variables', function(scope) {
+	var normalCheck;
+
 	utest.mockGameVariables(5, 5, 7);
-	mineSweeper.setGameVariables.call(mineSweeper);
+	scope.setGameVariables();
+	normalCheck = utest.checkEqual(scope.nrOfFields, 25);
 
-	return utest.checkEqual(mineSweeper.nrOfFields, 25);
-
-});
-
-tests.set('If number of rows is limited', function() {
 	utest.mockGameVariables(50, 5, 7);
-	mineSweeper.setGameVariables.call(mineSweeper);
+	scope.setGameVariables();
+	limitCheck = utest.checkEqual(scope.nrOfRows, 30);
 
-	return utest.checkEqual(mineSweeper.nrOfRows, 30);
+	return normalCheck && limitCheck;
 });
 
-tests.set('If fieldMap is set', function() {
-	mineSweeper.generateMineField.call(mineSweeper, utest.getMockDiv());
+tests.set('Generating field map and fields', function(scope) {
+	var mockDiv = utest.getMockDiv();
 
-	return utest.checkType(mineSweeper.fieldMap, 'object');
+	scope.generateMineField(mockDiv);
+
+	return utest.checkType(scope.fieldMap, 'object') && mockDiv.hasChildNodes();
 });
 
-tests.set('If fieldMap has the appropriate number of fields', function() {
+tests.set('Field map contains all the fields', function(scope) {
 	var size = 0,
 		i = 0,
 		j = 0;
 
-	mineSweeper.generateMineField.call(mineSweeper, utest.getMockDiv());
+	scope.generateMineField(utest.getMockDiv());
 
-	if (mineSweeper.fieldMap.length) {
-		for(i; i < mineSweeper.fieldMap.length; i++) {
-			if (mineSweeper.fieldMap[i] && mineSweeper.fieldMap[i].length) {
-				for(j; j < mineSweeper.fieldMap[i].length; j++) {
-					if (mineSweeper.fieldMap[i][j]) {
+	if (scope.fieldMap.length) {
+		for(i; i < scope.fieldMap.length; i++) {
+			if (scope.fieldMap[i] && scope.fieldMap[i].length) {
+				for(j; j < scope.fieldMap[i].length; j++) {
+					if (scope.fieldMap[i][j]) {
 						size++;
 					}
 				}
@@ -130,19 +176,24 @@ tests.set('If fieldMap has the appropriate number of fields', function() {
 	return utest.checkEqual(size, 150);
 });
 
-tests.set('If enough number of mines are generated', function() {
+tests.set('The correct number of mines are generated', function(scope) {
 	var mines;
 
 	utest.mockGameVariables(8, 8, 10);
-	mineSweeper.setGameVariables.call(mineSweeper);
-	mineSweeper.generateMineField.call(mineSweeper, utest.getMockDiv());
-	mines = mineSweeper.getMineIndexes.call(mineSweeper).size;
+	scope.setGameVariables();
+	mines = scope.getMineIndexes().size;
 
 	return utest.checkEqual(mines, 10);
 });
 
-tests.set('If the correct neighbors are returned', function() {
-	var index = mineSweeper.getFieldIndex.call(mineSweeper,[8, 8]);
+tests.set('Coordinates translate to corresponding index', function(scope) {
+	var index = scope.getFieldIndex([8,8]);
 
 	return utest.checkEqual(index, 64);
+});
+
+tests.set('Index translates to corresponding coordinates', function(scope) {
+	var coordinates = scope.getFieldCoords(44);
+
+	return utest.checkArrayEqual(coordinates, [6, 4]);
 });

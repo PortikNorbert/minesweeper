@@ -39,7 +39,10 @@ var mineSweeper = (function() {
 	 * - {number} fieldSize - The width and height of a field used to give a dynamic size to the minesweeper.
 	 */
 
-		
+	var scope = this;
+
+	scope.game = {};
+
 	/**
 	 * Shows a message in a modal window, game over and victory messages are shown by this method.
 	 * @alias showMessage
@@ -73,7 +76,7 @@ var mineSweeper = (function() {
 	 * @returns {array} An array of 2 numbers defining the position of a field.
 	 */
 	function getFieldCoords(idx) {
-		return [Math.ceil(idx/this.nrOfColumns), idx % this.nrOfColumns || this.nrOfColumns];
+		return [Math.ceil(idx/scope.nrOfColumns), idx % scope.nrOfColumns || scope.nrOfColumns];
 	}
 
 	/**
@@ -83,7 +86,7 @@ var mineSweeper = (function() {
 	 * @returns {number} Returns the order number of a field.
 	 */
 	function getFieldIndex(coords) {
-		return (coords[0] - 1) * this.nrOfColumns + coords[1];
+		return (coords[0] - 1) * scope.nrOfColumns + coords[1];
 	}
 
 	/**
@@ -93,7 +96,7 @@ var mineSweeper = (function() {
 	 * @returns {object} Returns an object with 3 fields (if the field was revealed, if it is a mine and if it has a flag put on it).
 	 */
 	function getState(coords) {
-		return this.fieldMap[coords[0]][coords[1]];
+		return scope.fieldMap[coords[0]][coords[1]];
 	}
 
 	/**
@@ -154,8 +157,8 @@ var mineSweeper = (function() {
 			minutes++;
 		}
 		timerField.innerText = formatTime(minutes).concat(':', formatTime(seconds));
-		this.timer = setTimeout(function() {
-			if (this.game.started) {
+		scope.timer = setTimeout(function() {
+			if (scope.game.started) {
 				runTime(timerField, minutes, seconds);
 			}
 		}, 1000);
@@ -192,8 +195,8 @@ var mineSweeper = (function() {
 		var minNrOfFields = 1,
 			mineIndexes = new Set();
 
-		while (mineIndexes.size < this.nrOfMines) {
-			mineIndexes.add(getRandomNumberBetween(minNrOfFields, this.nrOfFields));
+		while (mineIndexes.size < scope.nrOfMines) {
+			mineIndexes.add(getRandomNumberBetween(minNrOfFields, scope.nrOfFields));
 		}
 
 		return mineIndexes;
@@ -211,9 +214,7 @@ var mineSweeper = (function() {
 		field.setAttribute('index', i);
 		field.setAttribute('class', 'c-minesweeper__field');
 		field.setAttribute('id', 'minesweeper-field'.concat(i));
-		field.setAttribute('style', 'width: '.concat(this.fieldSize, 'px; height: ', this.fieldSize, 'px;'));
-		field.addEventListener('click', handleLeftClick);
-		field.addEventListener('contextmenu', handleRightClick.bind(this));
+		field.setAttribute('style', 'width: '.concat(scope.fieldSize, 'px; height: ', scope.fieldSize, 'px;'));
 
 		return field;
 	}
@@ -229,16 +230,16 @@ var mineSweeper = (function() {
 			row = 0,
 			mineIndexes = getMineIndexes();
 
-		this.fieldMap = [];
+		scope.fieldMap = [];
 
-		for(i; i <= this.nrOfFields; i++) {
-			column = (i % this.nrOfColumns) || this.nrOfColumns;
-			if (i % this.nrOfColumns === 1) {
+		for(i; i <= scope.nrOfFields; i++) {
+			column = (i % scope.nrOfColumns) || scope.nrOfColumns;
+			if (i % scope.nrOfColumns === 1) {
 				row++;
-				this.fieldMap[row] = [];
+				scope.fieldMap[row] = [];
 			}
 
-			this.fieldMap[row][column] = {
+			scope.fieldMap[row][column] = {
 				flagged: false,
 				revealed: false,
 				mine: mineIndexes.has(i)
@@ -277,33 +278,33 @@ var mineSweeper = (function() {
 	 * @alias setGameVariables
 	 */
 	function setGameVariables() {
-		this.nrOfRows = getInputValue('minesweeper-height', true);
-		if (this.nrOfRows < 2) {
-			this.nrOfRows = 2;
-			setInputValue('minesweeper-height', this.nrOfRows);
-		} else if (this.nrOfRows > 30) {
-			this.nrOfRows = 30;
-			setInputValue('minesweeper-height', this.nrOfRows);
+		scope.nrOfRows = getInputValue('minesweeper-height', true);
+		if (scope.nrOfRows < 2) {
+			scope.nrOfRows = 2;
+			setInputValue('minesweeper-height', scope.nrOfRows);
+		} else if (scope.nrOfRows > 30) {
+			scope.nrOfRows = 30;
+			setInputValue('minesweeper-height', scope.nrOfRows);
 		}
 
-		this.nrOfColumns = getInputValue('minesweeper-width', true);
-		if (this.nrOfColumns < 2) {
-			this.nrOfColumns = 2;
-			setInputValue('minesweeper-width', this.this.nrOfColumns);
-		} else if (this.nrOfColumns > 30) {
-			this.nrOfColumns = 30;
-			setInputValue('minesweeper-width', this.nrOfColumns);
+		scope.nrOfColumns = getInputValue('minesweeper-width', true);
+		if (scope.nrOfColumns < 2) {
+			scope.nrOfColumns = 2;
+			setInputValue('minesweeper-width', scope.nrOfColumns);
+		} else if (scope.nrOfColumns > 30) {
+			scope.nrOfColumns = 30;
+			setInputValue('minesweeper-width', scope.nrOfColumns);
 		}
 
-		this.nrOfFields = this.nrOfRows * this.nrOfColumns;
+		scope.nrOfFields = scope.nrOfRows * scope.nrOfColumns;
 
-		this.nrOfMines = getInputValue('minesweeper-mines', true);
-		if (this.nrOfMines >= this.nrOfFields) {
-			this.nrOfMines = this.nrOfFields - 1;
-			setInputValue('minesweeper-mines', this.nrOfMines);
-		} else if (this.nrOfMines < 1) {
-			this.nrOfMines = 1;
-			setInputValue('minesweeper-mines', this.nrOfMines);
+		scope.nrOfMines = getInputValue('minesweeper-mines', true);
+		if (scope.nrOfMines >= scope.nrOfFields) {
+			scope.nrOfMines = scope.nrOfFields - 1;
+			setInputValue('minesweeper-mines', scope.nrOfMines);
+		} else if (scope.nrOfMines < 1) {
+			scope.nrOfMines = 1;
+			setInputValue('minesweeper-mines', scope.nrOfMines);
 		}
 	}
 
@@ -317,11 +318,10 @@ var mineSweeper = (function() {
 
 		menuWidth = Math.ceil(document.getElementById('minesweeper-menu').getClientRects()[0].width),
 		baseLength = document.body.clientWidth - menuWidth > document.body.clientHeight ? document.body.clientHeight - 100 : document.body.clientWidth - menuWidth - 100;
-		fieldRatio = this.nrOfColumns > this.nrOfRows ? this.nrOfColumns : this.nrOfRows;
-		this.fieldSize = Math.floor(baseLength / fieldRatio);
-		mineFieldSize = 'opacity: 1; max-width: '.concat(this.nrOfColumns * (this.fieldSize + fieldMargin), 'px; max-height: ', this.nrOfRows * (this.fieldSize + fieldMargin),'px;');
+		fieldRatio = scope.nrOfColumns > scope.nrOfRows ? scope.nrOfColumns : scope.nrOfRows;
+		scope.fieldSize = Math.floor(baseLength / fieldRatio);
+		mineFieldSize = 'opacity: 1; max-width: '.concat(scope.nrOfColumns * (scope.fieldSize + fieldMargin), 'px; max-height: ', scope.nrOfRows * (scope.fieldSize + fieldMargin),'px;');
 
-		mineField.innerText = '';
 		mineField.setAttribute('style', mineFieldSize);
 	}
 
@@ -329,14 +329,15 @@ var mineSweeper = (function() {
 	 * Resets the game state. Stops the timer.
 	 * @alias resetGame
 	 */
-	function resetGame() {
-		this.game = {
-			flagged: 0,
+	function resetGame(mineField) {
+		scope.game = {
 			reveals: 0,
 			started: true
 		};
 
-		clearTimeout(this.timer);
+		mineField.innerText = '';
+
+		clearTimeout(scope.timer);
 	}
 
 	/**
@@ -346,12 +347,16 @@ var mineSweeper = (function() {
 	function newGame() {
 		var mineField = document.getElementById('minesweeper-mineField');
 
+		resetGame(mineField);
 		hideMessage();
-		resetGame();
 		setGameVariables();
 		setSize(mineField);
 		generateMineField(mineField);
+
 		initTimer();
+
+		mineField.addEventListener('click', handleLeftClick);
+		mineField.addEventListener('contextmenu', handleRightClick);
 	}
 
 	/**
@@ -361,7 +366,7 @@ var mineSweeper = (function() {
 	 * @returns {boolean} It is true if the fields exists. False if not.
 	 */
 	function isExistingNeighbor(coords) {
-		return 0 < coords[0] && coords[0] <= this.nrOfRows && 0 < coords[1] && coords[1] <= this.nrOfColumns;
+		return 0 < coords[0] && coords[0] <= scope.nrOfRows && 0 < coords[1] && coords[1] <= scope.nrOfColumns;
 	}
 
 	/**
@@ -455,7 +460,7 @@ var mineSweeper = (function() {
 	 * @param {boolean} victory - A flag showing if the game ended with victory or not.
 	 */
 	function revealAll(victory) {
-		for (var i = 1; i<= this.nrOfFields; i++) {
+		for (var i = 1; i<= scope.nrOfFields; i++) {
 			resolveField(getFieldCoords(i), victory);
 		}
 	}
@@ -466,7 +471,7 @@ var mineSweeper = (function() {
 	 */
 	function gameOver() {
 		revealAll(false);
-		this.game.started = false;
+		scope.game.started = false;
 		showMessage('You have tapped a mine, the Game is Over.', false);
 	}
 
@@ -477,10 +482,10 @@ var mineSweeper = (function() {
 	function checkVictoryCondition() {
 		var msg = "You've revealed all cells without tapping a single mine in ".concat(getTime(), ' seconds! Congratulations!');
 
-		if (this.game.reveals === this.nrOfFields - this.nrOfMines) {
+		if (scope.game.reveals === scope.nrOfFields - scope.nrOfMines) {
 			revealAll(true);
 			showMessage(msg, true);
-			this.game.started = false;
+			scope.game.started = false;
 		}
 	}
 
@@ -508,7 +513,7 @@ var mineSweeper = (function() {
 
 		if (!state.revealed && !state.flagged) {
 			state.revealed = true;
-			this.game.reveals++;
+			scope.game.reveals++;
 
 			if (state.mine) {
 				setFieldState(coords, 'mine', '&#9762;');
@@ -536,11 +541,9 @@ var mineSweeper = (function() {
 
 		if (!state.revealed) {
 			if (state.flagged) {
-				this.game.flagged--;
 				state.flagged = false;
 				setFieldState(coords, 'hiden', '');
 			} else {
-				this.game.flagged++;
 				state.flagged = true;
 				setFieldState(coords, 'flag', '&#9888;');
 			}
@@ -551,8 +554,10 @@ var mineSweeper = (function() {
 	 * Handler for clicking on a field with the left mouse button.
 	 * @alias handleLeftClick
 	 */
-	function handleLeftClick() {
-		revealField(getFieldCoords(this.getAttribute('index')));
+	function handleLeftClick(event) {
+		if (event.target.getAttribute('id') !== 'minesweeper-mineField') {
+			revealField(getFieldCoords(event.target.getAttribute('index')));
+		}
 	}
 
 	/**
@@ -561,37 +566,38 @@ var mineSweeper = (function() {
 	 * @param {object} event - The click event object.
 	 */
 	function handleRightClick(event) {
-		if (this.game.started) {
+		if (event.target.getAttribute('id') !== 'minesweeper-mineField' && scope.game.started) {
 			toggleFlag(getFieldCoords(event.target.getAttribute('index')));
 		}
 
 		event.preventDefault();
 	}
+	
+	scope.setGameVariables = setGameVariables;
+	scope.showMessage = showMessage;
+	scope.getFieldCoords = getFieldCoords;
+	scope.getFieldIndex = getFieldIndex;
+	scope.getState = getState;
+	scope.setFieldState = setFieldState;
+	scope.formatTime = formatTime;
+	scope.getMineIndexes = getMineIndexes;
+	scope.generateMineField = generateMineField;
+	scope.resetGame = resetGame;
+	scope.isExistingNeighbor = isExistingNeighbor;
+	scope.getNeighborIndexes = getNeighborIndexes;
+	scope.getNeighborsMines = getNeighborsMines;
+	scope.resolveField = resolveField;
+	scope.gameOver = gameOver;
+	scope.checkVictoryCondition = checkVictoryCondition;
+	scope.revealNeighbors = revealNeighbors;
+	scope.revealField = revealField;
+	scope.toggleFlag = toggleFlag;
+	scope.setInputValue = setInputValue;
+	scope.getInputValue = getInputValue;
 
 	return {
-		showMessage: showMessage,
-		getFieldCoords: getFieldCoords,
-		getFieldIndex: getFieldIndex,
-		getState: getState,
-		setFieldState: setFieldState,
-		formatTime: formatTime,
-		getMineIndexes: getMineIndexes,
-		generateMineField: generateMineField,
-		setGameVariables: setGameVariables,
-		resetGame: resetGame,
-		isExistingNeighbor: isExistingNeighbor,
-		getNeighborIndexes: getNeighborIndexes,
-		getNeighborsMines: getNeighborsMines,
-		resolveField: resolveField,
-		gameOver: gameOver,
-		checkVictoryCondition: checkVictoryCondition,
-		revealNeighbors: revealNeighbors,
-		revealField: revealField,
-		toggleFlag: toggleFlag,
-		setInputValue: setInputValue,
-		getInputValue: getInputValue,
+		scope: scope,
 		newGame: newGame,
 		hideMessage: hideMessage
 	}
 })();
-	this.fieldMap = [];
