@@ -13,26 +13,23 @@ body {
 
 .c-minesweeper {
 	display: flex;
-	align-items: center;
 	font-family: Georgia;
-	height: 100%;
+	min-height: 100%;
 	overflow: auto;
 	width: 100%;
 	justify-content: center;
 }
 
 .c-minesweeper__mineFieldCt {
-	min-width: 55%;
-	min-height: 100%;
 	display: none;
-	justify-content: center;
-	align-items: center;
+	overflow: auto;
+	min-height: 100%;
 }
 
 .c-minesweeper__mineField {
 	height: 100%;
-	padding: 5px;
-	margin: 10px 20px;
+	padding: 15px;
+	margin: 10px auto;
 	flex-wrap: wrap;
 	opacity: 0;
 	display: flex;
@@ -48,6 +45,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: center;
 	flex: 0 1 380px;
 	margin: 0 5px;
 }
@@ -101,8 +99,8 @@ body {
 }
 
 .c-minesweeper__param {
-	flex: 0 0 35px;
-	max-width: 35px;
+	flex: 0 0 60px;
+	max-width: 60px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -192,8 +190,8 @@ input[type=number]::-webkit-outer-spin-button {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	font-size: 26px;
-	font-size: 1.4vw;
+	font-size: 23px;
+	font-size: 1.2vw;
 	animation-duration: 0.20s;
 	border-color: rgba(0, 0, 0, 0.5);
 	background-color: rgb(105, 65, 28);

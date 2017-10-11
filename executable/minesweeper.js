@@ -8,7 +8,8 @@
  * To learn, where the mines are, check the field you have been clicked. If the field does not contain a number, there are no mines in the immediate vicinity.
  * If you see a number in a field, that means that in the immediate vicinity there are that number of mines.
  * It is possible to tag a field with the right mouse button. Do this, if you suspect that there is a mine underneath. This way you can ensure that you don't click that field by accident.
- * To un-tag a field, right click on it again. 
+ * To un-tag a field, right click on it again.
+ * You can have a minefield of 70 x 70 in size.
  *
  * Legend of signs
  *
@@ -50,7 +51,7 @@ var mineSweeper = (function(isPublic) {
 		getState, setFieldState,
 		formatTime, getClockTime, runClock, initClock,
 		getRandomNumberBetween, getMineIndexes,
-		createField, generateMineField, setGameVariables, setSize,
+		createField, generateMineField, setNeighboringMinesCount, setGameVariables, setSize,
 		resetGame, newGame, gameOver, isVictory, victory,
 		isExistingField, getNeighboringMines,
 		resolveField, resolveAllFields, revealNeighbors, revealField, toggleFlag,
@@ -288,6 +289,23 @@ var mineSweeper = (function(isPublic) {
 	};
 
 	/**
+	 * Sets on each field's state the number of neighboring mines.
+	 * @alias setNeighboringMinesCount
+	 */
+	setNeighboringMinesCount = function() {
+		var rows = 1, columns = 1;
+
+		while (rows <= scope.nrOfRows) {
+			while(columns <= scope.nrOfColumns) {
+				getState([rows, columns]).neighborMines = getNeighboringMines([rows , columns]);
+				columns++;
+			}
+			columns = 1;
+			rows++;
+		}
+	};
+
+	/**
 	 * Reads, adjusts and sets the input parameters for the minefield.
 	 * @alias setGameVariables
 	 */
@@ -296,8 +314,8 @@ var mineSweeper = (function(isPublic) {
 		if (scope.nrOfRows < 2) {
 			scope.nrOfRows = 2;
 			setInputValue('minesweeper-height', scope.nrOfRows);
-		} else if (scope.nrOfRows > 30) {
-			scope.nrOfRows = 30;
+		} else if (scope.nrOfRows > 70) {
+			scope.nrOfRows = 70;
 			setInputValue('minesweeper-height', scope.nrOfRows);
 		}
 
@@ -305,8 +323,8 @@ var mineSweeper = (function(isPublic) {
 		if (scope.nrOfColumns < 2) {
 			scope.nrOfColumns = 2;
 			setInputValue('minesweeper-width', scope.nrOfColumns);
-		} else if (scope.nrOfColumns > 30) {
-			scope.nrOfColumns = 30;
+		} else if (scope.nrOfColumns > 70) {
+			scope.nrOfColumns = 70;
 			setInputValue('minesweeper-width', scope.nrOfColumns);
 		}
 
@@ -331,10 +349,10 @@ var mineSweeper = (function(isPublic) {
 		var baseLength, fieldHeight, fieldWidth, fieldRatio, mineFieldSize, fieldMargin = 2;
 
 		menuWidth = Math.ceil(document.getElementById('minesweeper-menu').getClientRects()[0].width),
-		baseLength = document.body.clientWidth - menuWidth > document.body.clientHeight ? document.body.clientHeight - 100 : document.body.clientWidth - menuWidth - 100;
+		baseLength = (document.body.clientWidth - menuWidth > document.body.clientHeight ? document.body.clientHeight : document.body.clientWidth - menuWidth) - 110;
 		fieldRatio = scope.nrOfColumns > scope.nrOfRows ? scope.nrOfColumns : scope.nrOfRows;
-		scope.fieldSize = Math.floor(baseLength / fieldRatio);
-		mineFieldSize = 'opacity: 1; max-width: '.concat(scope.nrOfColumns * (scope.fieldSize + fieldMargin), 'px; max-height: ', scope.nrOfRows * (scope.fieldSize + fieldMargin),'px;');
+		scope.fieldSize = Math.floor(baseLength / fieldRatio) < 23 ? 23 : Math.floor(baseLength / fieldRatio);
+		mineFieldSize = 'opacity: 1; width: '.concat(scope.nrOfColumns * (scope.fieldSize + fieldMargin), 'px; height: ', scope.nrOfRows * (scope.fieldSize + fieldMargin),'px;');
 
 		mineField.setAttribute('style', mineFieldSize);
 	};
@@ -364,13 +382,14 @@ var mineSweeper = (function(isPublic) {
 		var mineField = document.getElementById('minesweeper-mineField'),
 			mineFieldCt = document.getElementById('minesweeper-mineField-ct');
 
-		mineFieldCt.setAttribute('style', 'display: flex;');
+		mineFieldCt.setAttribute('style', 'display: block; width: 75%;');
 
 		resetGame(mineField);
 		hideMessage();
 		setGameVariables();
 		setSize(mineField);
 		generateMineField(mineField);
+		setNeighboringMinesCount();
 
 		initClock();
 
@@ -439,8 +458,7 @@ var mineSweeper = (function(isPublic) {
 	 * @param {array} coords - An array of 2 numbers used to access a field's state in the field map.
 	 */
 	resolveField = function(coords) {
-		var neighborMines,
-			state = getState(coords);
+		var state = getState(coords);
 
 		if (!state.revealed) {
 			state.revealed = true;
@@ -453,11 +471,10 @@ var mineSweeper = (function(isPublic) {
 					setFieldState(coords, 'mine', '&#9762;');
 				}
 			} else {
-				neighborMines = getNeighboringMines(coords);
 				if (state.flagged) {
 					setFieldState(coords, 'flagBad', '&#9872;');
-				} else if (neighborMines) {
-					setFieldState(coords, 'danger', neighborMines);
+				} else if (state.neighborMines) {
+					setFieldState(coords, 'danger', state.neighborMines);
 				} else {
 					setFieldState(coords, 'blank', '');
 				}
@@ -514,11 +531,12 @@ var mineSweeper = (function(isPublic) {
 	 * @param {number} mainIndex - The order number of the selected field.
 	 */
 	revealNeighbors = function(mainIndex) {
-		var neighborIndexes = getNeighborIndexes(mainIndex);
+		var i,
+			neighborIndexes = getNeighborIndexes(mainIndex);
 
-		neighborIndexes.map(function(coords) {
-			revealField(coords);
-		});
+		for (i = 0; i < neighborIndexes.length; i++) {
+			revealField(neighborIndexes[i]);
+		}
 	};
 
 	/**
@@ -527,8 +545,7 @@ var mineSweeper = (function(isPublic) {
 	 * @param {array} coords - An array of 2 numbers used to access a field's state in the field map.
 	 */
 	revealField = function(coords) {
-		var neighborMines,
-			state = getState(coords);
+		var state = getState(coords);
 
 		if (!state.revealed && !state.flagged) {
 			state.revealed = true;
@@ -538,9 +555,8 @@ var mineSweeper = (function(isPublic) {
 				setFieldState(coords, 'mine', '&#9762;');
 				gameOver();
 			} else {
-				neighborMines = getNeighboringMines(coords);
-				if (neighborMines) {
-					setFieldState(coords, 'danger', neighborMines);
+				if (state.neighborMines) {
+					setFieldState(coords, 'danger', state.neighborMines);
 				} else {
 					setFieldState(coords, 'blank', '');
 					revealNeighbors(coords);
@@ -617,6 +633,7 @@ var mineSweeper = (function(isPublic) {
 	scope.isExistingField = isExistingField;
 	scope.getNeighborIndexes = getNeighborIndexes;
 	scope.getNeighboringMines = getNeighboringMines;
+	scope.setNeighboringMinesCount = setNeighboringMinesCount;
 	scope.gameOver = gameOver;
 	scope.revealField = revealField;
 	scope.setInputValue = setInputValue;

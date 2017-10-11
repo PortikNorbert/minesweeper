@@ -9,6 +9,7 @@ unit.test('Game reset', function(scope) {
 
 	scope.setGameVariables();
 	scope.generateMineField(unit.getMockDiv());
+	scope.setNeighboringMinesCount();
 	scope.revealField([1,1]);
 	actionCheck = unit.checkIsGreater(scope.game.reveals, 0);
 
@@ -22,9 +23,9 @@ unit.test('Setting game variables', function(scope) {
 	scope.setGameVariables();
 	normalCheck = unit.checkEqual(scope.nrOfFields, 25);
 
-	unit.mockGameVariables(50, 5, 7);
+	unit.mockGameVariables(150, 5, 7);
 	scope.setGameVariables();
-	limitCheck = unit.checkEqual(scope.nrOfRows, 30);
+	limitCheck = unit.checkEqual(scope.nrOfRows, 70);
 
 	return normalCheck && limitCheck;
 });
@@ -57,7 +58,7 @@ unit.test('Field map contains all the fields', function(scope) {
 		}
 	}
 
-	return unit.checkEqual(size, 150);
+	return unit.checkEqual(size, 350);
 });
 
 unit.test('The correct number of mines are generated', function(scope) {
@@ -137,7 +138,7 @@ unit.test('Finds the right number of mines at neighbors', function(scope) {
 	scope.resetGame(unit.getMockDiv());
 	scope.setGameVariables();
 	scope.generateMineField(unit.getMockDiv());
-
+	scope.setNeighboringMinesCount();
 	scope.getMineIndexes = originalMineGenerator;
 
 	return unit.checkEqual(scope.getNeighboringMines([2,2]), 0) && unit.checkEqual(scope.getNeighboringMines([5,4]), 4) && unit.checkEqual(scope.getNeighboringMines([7,7]), 2) && unit.checkEqual(scope.getNeighboringMines([2,5]), 1);
