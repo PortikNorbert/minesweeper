@@ -24,7 +24,7 @@ body {
 .c-minesweeper__mineFieldCt {
 	min-width: 55%;
 	min-height: 100%;
-	display: flex;
+	display: none;
 	justify-content: center;
 	align-items: center;
 }

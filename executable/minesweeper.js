@@ -361,7 +361,10 @@ var mineSweeper = (function(isPublic) {
 	 * @alias newGame
 	 */
 	newGame = function() {
-		var mineField = document.getElementById('minesweeper-mineField');
+		var mineField = document.getElementById('minesweeper-mineField'),
+			mineFieldCt = document.getElementById('minesweeper-mineField-ct');
+
+		mineFieldCt.setAttribute('style', 'display: flex;');
 
 		resetGame(mineField);
 		hideMessage();
